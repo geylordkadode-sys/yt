@@ -1,29 +1,32 @@
 import { AppLayout } from "@/components/layout/AppLayout";
 import { Header } from "@/components/layout/Header";
 import { ProductCard } from "@/components/product/ProductCard";
-import { Search } from "lucide-react";
+import { SlidersHorizontal, Search, Star, Shirt, Home as HomeIcon, Heart, Smartphone, LayoutGrid } from "lucide-react";
 import { Link } from "wouter";
+import { useState } from "react";
 
 const CATEGORIES = [
-  { id: "all", name: "All", icon: "✨" },
-  { id: "women", name: "Women", icon: "👗" },
-  { id: "men", name: "Men", icon: "👕" },
-  { id: "home", name: "Home", icon: "🏡" },
-  { id: "beauty", name: "Beauty", icon: "💄" },
-  { id: "electronics", name: "Tech", icon: "📱" },
+  { id: "popular", name: "Popular", icon: Star },
+  { id: "women", name: "Women", icon: Shirt },
+  { id: "men", name: "Men", icon: Shirt },
+  { id: "home", name: "Home", icon: HomeIcon },
+  { id: "beauty", name: "Beauty", icon: Heart },
+  { id: "electronics", name: "Electronics", icon: Smartphone },
+  { id: "all", name: "All", icon: LayoutGrid },
 ];
 
 const MOCK_LISTINGS = [
   {
     id: "1",
-    title: "Vintage Denim Jacket",
-    price: 45.00,
-    images: ["https://images.unsplash.com/photo-1542272604-787c3835535d"],
+    title: "Elegant Handbag",
+    price: 1299,
+    images: ["https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400"],
     category: "women",
     status: "active",
     quantity: 1,
     sellerId: "s1",
-    sellerName: "Vintage Store",
+    sellerName: "Ananya Sharma",
+    sellerAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60",
     sellerVerified: true,
     likesCount: 24,
     viewsCount: 150,
@@ -31,126 +34,220 @@ const MOCK_LISTINGS = [
     rating: 4.8,
     isLiked: false,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
   },
   {
     id: "2",
-    title: "Minimalist Ceramic Vase",
-    price: 28.50,
-    images: ["https://images.unsplash.com/photo-1612196808214-b8e1d6145a8c"],
-    category: "home",
-    status: "active",
-    quantity: 5,
-    sellerId: "s2",
-    sellerName: "Artisan Crafts",
-    sellerVerified: true,
-    likesCount: 12,
-    viewsCount: 89,
-    soldCount: 3,
-    rating: 5.0,
-    isLiked: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  },
-  {
-    id: "3",
-    title: "Sony Wireless Headphones",
-    price: 120.00,
-    originalPrice: 150.00,
-    images: ["https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb"],
+    title: "Smart Watch",
+    price: 2499,
+    images: ["https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400"],
     category: "electronics",
     status: "active",
-    quantity: 2,
-    sellerId: "s3",
-    sellerName: "Tech Hub",
-    sellerVerified: false,
+    quantity: 3,
+    sellerId: "s2",
+    sellerName: "Rohan Verma",
+    sellerAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60",
+    sellerVerified: true,
     likesCount: 56,
     viewsCount: 340,
     soldCount: 12,
-    rating: 4.5,
+    rating: 4.7,
     isLiked: false,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "3",
+    title: "Modern Sofa",
+    price: 8999,
+    images: ["https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400"],
+    category: "home",
+    status: "active",
+    quantity: 1,
+    sellerId: "s3",
+    sellerName: "Mehak Kapoor",
+    sellerAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60",
+    sellerVerified: true,
+    likesCount: 33,
+    viewsCount: 220,
+    soldCount: 5,
+    rating: 4.9,
+    isLiked: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: "4",
-    title: "Organic Skincare Set",
-    price: 65.00,
-    images: ["https://images.unsplash.com/photo-1556228578-0d85b1a4d571"],
-    category: "beauty",
+    title: "Wireless Headphones",
+    price: 1899,
+    images: ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400"],
+    category: "electronics",
     status: "active",
-    quantity: 10,
+    quantity: 8,
     sellerId: "s4",
-    sellerName: "Pure Beauty",
+    sellerName: "Arjun Malhotra",
+    sellerAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60",
     sellerVerified: true,
     likesCount: 89,
-    viewsCount: 420,
+    viewsCount: 520,
     soldCount: 45,
-    rating: 4.9,
+    rating: 4.6,
     isLiked: false,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "5",
+    title: "Floral Dress",
+    price: 799,
+    images: ["https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400"],
+    category: "women",
+    status: "active",
+    quantity: 4,
+    sellerId: "s5",
+    sellerName: "Priya Singh",
+    sellerAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60",
+    sellerVerified: true,
+    likesCount: 41,
+    viewsCount: 180,
+    soldCount: 8,
+    rating: 4.8,
+    isLiked: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "6",
+    title: "Casual Sneakers",
+    price: 1499,
+    images: ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"],
+    category: "men",
+    status: "active",
+    quantity: 6,
+    sellerId: "s6",
+    sellerName: "Karan Mehta",
+    sellerAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60",
+    sellerVerified: true,
+    likesCount: 67,
+    viewsCount: 390,
+    soldCount: 23,
+    rating: 4.5,
+    isLiked: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "7",
+    title: "Table Lamp",
+    price: 599,
+    images: ["https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400"],
+    category: "home",
+    status: "active",
+    quantity: 10,
+    sellerId: "s7",
+    sellerName: "Neha Iyer",
+    sellerAvatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60",
+    sellerVerified: true,
+    likesCount: 28,
+    viewsCount: 145,
+    soldCount: 15,
+    rating: 4.7,
+    isLiked: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "8",
+    title: "Perfume",
+    price: 1099,
+    images: ["https://images.unsplash.com/photo-1541643600914-78b084683702?w=400"],
+    category: "beauty",
+    status: "active",
+    quantity: 5,
+    sellerId: "s8",
+    sellerName: "Simran Kaur",
+    sellerAvatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=60",
+    sellerVerified: true,
+    likesCount: 53,
+    viewsCount: 310,
+    soldCount: 31,
+    rating: 4.9,
+    isLiked: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
 ];
 
 export default function Home() {
+  const [activeCategory, setActiveCategory] = useState("popular");
+
   return (
     <AppLayout>
       <Header />
-      
+
       {/* Search Bar */}
-      <div className="px-4 py-3 bg-gradient-to-b from-primary/10 to-transparent">
+      <div className="px-4 py-3 bg-white">
         <Link href="/search">
-          <div className="bg-card rounded-full flex items-center px-4 py-3 shadow-sm border border-border cursor-text">
-            <Search className="w-5 h-5 text-muted-foreground mr-2" />
-            <span className="text-muted-foreground text-sm">Search for products, brands...</span>
+          <div className="flex items-center gap-2">
+            <div className="flex-1 bg-rose-50 border border-rose-100 rounded-full flex items-center px-4 py-2.5 gap-2">
+              <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
+              <span className="text-gray-400 text-sm">Search for products, brands and more...</span>
+            </div>
+            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0 shadow-sm">
+              <SlidersHorizontal className="w-4 h-4 text-white" />
+            </div>
           </div>
         </Link>
       </div>
 
-      {/* Categories */}
-      <div className="px-4 py-2 overflow-x-auto hide-scrollbar">
-        <div className="flex gap-4 min-w-max pb-2">
-          {CATEGORIES.map((cat, idx) => (
-            <Link key={cat.id} href={`/search?category=${cat.id}`} className="flex flex-col items-center gap-1.5 group">
-              <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-sm transition-transform group-hover:scale-105 ${idx === 0 ? 'bg-primary text-white' : 'bg-card border border-border'}`}>
-                {cat.icon}
-              </div>
-              <span className="text-[11px] font-medium text-muted-foreground group-hover:text-foreground">{cat.name}</span>
-            </Link>
-          ))}
+      {/* Shortcuts */}
+      <div className="bg-white px-4 pt-2 pb-4">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-bold text-gray-900">Shortcuts</h2>
+          <button className="text-sm font-medium text-primary">See all</button>
+        </div>
+        <div className="flex gap-3 overflow-x-auto hide-scrollbar pb-1">
+          {CATEGORIES.map((cat) => {
+            const Icon = cat.icon;
+            const isActive = activeCategory === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className="flex flex-col items-center gap-1.5 flex-shrink-0"
+              >
+                <div className={`w-14 h-14 rounded-full flex items-center justify-center border-2 transition-colors ${
+                  isActive
+                    ? "bg-primary border-primary"
+                    : "bg-rose-50 border-rose-100"
+                }`}>
+                  <Icon
+                    className={`w-6 h-6 ${isActive ? "text-white" : "text-primary"}`}
+                    strokeWidth={1.5}
+                  />
+                </div>
+                <span className={`text-[11px] font-medium ${isActive ? "text-primary" : "text-gray-500"}`}>
+                  {cat.name}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Featured Section */}
-      <div className="px-4 py-4">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold">Featured Finds</h2>
-          <Link href="/search" className="text-primary text-sm font-medium">See all</Link>
+      {/* Featured Products */}
+      <div className="bg-white mt-2 px-4 pb-4 pt-3">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-sm font-bold text-gray-900">Featured Products</h2>
+          <Link href="/search" className="text-sm font-medium text-primary">See all</Link>
         </div>
-        
+
         <div className="grid grid-cols-2 gap-3">
           {MOCK_LISTINGS.map(listing => (
             <ProductCard key={listing.id} listing={listing as any} />
           ))}
         </div>
       </div>
-      
-      {/* Trending Banner */}
-      <div className="px-4 py-2 my-2">
-        <div className="bg-gradient-to-r from-rose-400 to-primary rounded-2xl p-6 text-white relative overflow-hidden">
-          <div className="relative z-10">
-            <span className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider inline-block mb-2">Weekend Sale</span>
-            <h2 className="text-2xl font-bold mb-1">Up to 50% Off</h2>
-            <p className="text-white/90 text-sm mb-4">On selected summer styles</p>
-            <Link href="/search?promo=summer" className="bg-white text-primary px-5 py-2 rounded-full text-sm font-bold inline-block shadow-sm">
-              Shop Now
-            </Link>
-          </div>
-          <div className="absolute top-0 right-0 w-32 h-full bg-[url('https://images.unsplash.com/photo-1483985988355-763728e1935b')] bg-cover opacity-50 mix-blend-overlay"></div>
-        </div>
-      </div>
-      
     </AppLayout>
   );
 }
