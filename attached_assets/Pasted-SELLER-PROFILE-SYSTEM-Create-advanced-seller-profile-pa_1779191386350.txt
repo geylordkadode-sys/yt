@@ -1,0 +1,294 @@
+SELLER PROFILE SYSTEM
+
+Create advanced seller profile pages.
+
+Features:
+
+Seller avatar
+Verification badge
+Seller ratings
+Reviews count
+Followers/following
+Listings count
+Total sales
+Seller bio
+Social links
+Seller badges
+Seller achievements
+Seller analytics dashboard
+
+Seller profile tabs:
+
+Listings
+Sold Items
+Reviews
+Saved
+Likes
+Achievements
+SELLER ANALYTICS DASHBOARD
+
+Build advanced seller analytics.
+
+Include:
+
+Total revenue
+Sales trends
+Weekly/monthly charts
+Conversion rate
+Repeat buyers
+Product views
+Click-through rate
+Revenue analytics
+Inventory analytics
+Best-selling products
+Customer demographics
+Average response time
+Refund rates
+Top-performing categories
+
+Use:
+
+Recharts
+Animated charts
+Realtime updates
+PRODUCT LISTING SYSTEM
+
+Implement complete listing management.
+
+Seller features:
+
+Create listings
+Upload multiple product images
+Drag-and-drop image upload
+AI image optimization
+AI background cleanup
+AI category detection
+Product title
+Description
+Tags
+Category
+Price
+Quantity
+Shipping fees
+Product condition
+Delivery options
+Draft mode
+Publish/unpublish
+Edit/delete listings
+Mark as sold
+
+Product statuses:
+
+Draft
+Active
+Sold
+Archived
+Pending review
+AI FEATURES
+
+Implement AI-powered marketplace intelligence.
+
+AI Product Recommendations
+
+Use:
+
+Collaborative filtering
+Similar user behavior
+Product embeddings
+Wishlist analysis
+Search history
+Browsing patterns
+AI Search
+
+Features:
+
+Semantic search
+Typo correction
+Natural language search
+Smart filters
+Voice search
+AI Listing Assistant
+
+Generate:
+
+Product titles
+SEO descriptions
+Tags
+Suggested pricing
+Recommended categories
+AI Fraud Detection
+
+Detect:
+
+Fake listings
+Spam sellers
+Suspicious transactions
+Duplicate listings
+AI Moderation
+
+Automatically moderate:
+
+Product images
+Offensive text
+Scam content
+PRODUCT DETAILS PAGE
+
+Build immersive product pages.
+
+Features:
+
+Image carousel
+Zoom support
+Product variants
+Seller preview
+Product reviews
+Similar products
+Recommended products
+Add to cart
+Buy now
+Wishlist
+Share product
+Report product
+Product analytics
+Realtime stock updates
+SHOPPING CART SYSTEM
+
+Features:
+
+Add/remove items
+Quantity updates
+Save for later
+Coupons
+Discounts
+Shipping calculations
+Tax calculations
+Multi-vendor carts
+CHECKOUT & PAYMENTS
+
+Integrate:
+
+Stripe
+Razorpay
+PayPal
+Apple Pay
+Google Pay
+
+Features:
+
+Secure checkout
+Order confirmation
+Invoice generation
+Tax handling
+Shipping labels
+Escrow payments
+WALLET SYSTEM
+
+Implement marketplace wallet.
+
+Features:
+
+Wallet balance
+Seller earnings
+Withdraw funds
+Add balance
+Cashback
+Coupons
+Transaction history
+Refunds
+Pending payouts
+REALTIME CHAT SYSTEM
+
+Use Supabase Realtime.
+
+Features:
+
+Buyer-seller messaging
+Realtime messages
+Typing indicators
+Read receipts
+Image sharing
+Voice notes
+Product sharing
+Offer negotiation
+Push notifications
+Chat moderation
+FOLLOW & SOCIAL FEATURES
+
+Features:
+
+Follow sellers
+Seller feeds
+Likes
+Saved products
+Activity feed
+Share profiles
+Share listings
+REVIEW SYSTEM
+
+Features:
+
+Product reviews
+Seller reviews
+Star ratings
+Verified purchase badge
+Photo reviews
+Seller responses
+Helpful votes
+SEARCH & DISCOVERY
+
+Features:
+
+Trending products
+Featured sellers
+AI recommendations
+Personalized feed
+Recent searches
+Search filters
+Category filters
+Price filters
+Rating filters
+NOTIFICATION SYSTEM
+
+Use:
+
+Supabase Realtime
+Push notifications
+
+Notification types:
+
+New messages
+New followers
+Product likes
+Order updates
+Reviews
+Promotions
+Price drops
+ADMIN PANEL
+
+Create full admin dashboard.
+
+Features:
+
+User management
+Seller verification
+Listing moderation
+Analytics dashboard
+Revenue tracking
+Fraud monitoring
+Report management
+Refund management
+CMS management
+SUPABASE INTEGRATION
+
+Implement:
+
+Supabase Auth
+Supabase Database
+Supabase Storage
+Supabase Edge Functions
+Supabase Realtime
+Row Level Security
+Supabase Policies
+Database triggers
+File uploads
+Signed URLs

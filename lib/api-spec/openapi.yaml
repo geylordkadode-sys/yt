@@ -3,13 +3,32 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Berlin MarketHUB API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: listings
+    description: Product listing operations
+  - name: profiles
+    description: User profile operations
+  - name: categories
+    description: Category operations
+  - name: reviews
+    description: Review operations
+  - name: orders
+    description: Order and cart operations
+  - name: discovery
+    description: Discovery and search operations
+  - name: upload
+    description: File upload operations
+  - name: analytics
+    description: Seller analytics operations
+  - name: notifications
+    description: Notification operations
+
 paths:
   /healthz:
     get:
@@ -24,6 +43,568 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /listings:
+    get:
+      operationId: listListings
+      tags: [listings]
+      summary: List all product listings
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+        - name: condition
+          in: query
+          schema:
+            type: string
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [newest, price_asc, price_desc, popular]
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+    post:
+      operationId: createListing
+      tags: [listings]
+      summary: Create a new listing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListingInput"
+      responses:
+        "201":
+          description: Listing created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+
+  /listings/featured:
+    get:
+      operationId: listFeaturedListings
+      tags: [listings]
+      summary: Get featured/highlighted listings for home feed
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Featured listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /listings/trending:
+    get:
+      operationId: listTrendingListings
+      tags: [listings]
+      summary: Get trending listings
+      responses:
+        "200":
+          description: Trending listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /listings/{id}:
+    get:
+      operationId: getListing
+      tags: [listings]
+      summary: Get a listing by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Listing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateListing
+      tags: [listings]
+      summary: Update a listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListingUpdate"
+      responses:
+        "200":
+          description: Updated listing
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+    delete:
+      operationId: deleteListing
+      tags: [listings]
+      summary: Delete a listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Deleted
+
+  /listings/{id}/like:
+    post:
+      operationId: toggleListingLike
+      tags: [listings]
+      summary: Toggle like/wishlist on a listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Like toggled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LikeStatus"
+
+  /listings/{id}/sold:
+    patch:
+      operationId: markListingAsSold
+      tags: [listings]
+      summary: Mark a listing as sold
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Marked sold
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [categories]
+      summary: Get all product categories
+      responses:
+        "200":
+          description: Categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+  /profiles/{userId}:
+    get:
+      operationId: getProfile
+      tags: [profiles]
+      summary: Get a user profile
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateProfile
+      tags: [profiles]
+      summary: Update a user profile
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+
+  /profiles/{userId}/follow:
+    post:
+      operationId: toggleFollowProfile
+      tags: [profiles]
+      summary: Follow or unfollow a seller
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Follow toggled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FollowStatus"
+
+  /profiles/{userId}/stats:
+    get:
+      operationId: getProfileStats
+      tags: [profiles]
+      summary: Get seller stats (listings, followers, sales)
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Seller stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SellerStats"
+
+  /profiles/{userId}/listings:
+    get:
+      operationId: fetchSellerListings
+      tags: [profiles]
+      summary: Get listings by a specific seller
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Seller listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /reviews:
+    get:
+      operationId: listReviews
+      tags: [reviews]
+      summary: Get reviews (for a listing or seller)
+      parameters:
+        - name: listingId
+          in: query
+          schema:
+            type: string
+        - name: sellerId
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Reviews
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Review"
+    post:
+      operationId: createReview
+      tags: [reviews]
+      summary: Create a review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewInput"
+      responses:
+        "201":
+          description: Created review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+
+  /cart:
+    get:
+      operationId: getCart
+      tags: [orders]
+      summary: Get current user's cart
+      responses:
+        "200":
+          description: Cart items
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+    post:
+      operationId: addToCart
+      tags: [orders]
+      summary: Add item to cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CartItemInput"
+      responses:
+        "200":
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+
+  /cart/{itemId}:
+    delete:
+      operationId: removeFromCart
+      tags: [orders]
+      summary: Remove item from cart
+      parameters:
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cart"
+
+  /orders:
+    get:
+      operationId: listOrders
+      tags: [orders]
+      summary: List orders (purchases and sales)
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [purchases, sales]
+      responses:
+        "200":
+          description: Orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+
+  /discovery/home:
+    get:
+      operationId: getHomeDiscovery
+      tags: [discovery]
+      summary: Get home feed - featured, categories, trending
+      responses:
+        "200":
+          description: Home feed data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomeDiscovery"
+
+  /discovery/search:
+    get:
+      operationId: searchListings
+      tags: [discovery]
+      summary: Search listings with filters
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+        - name: sort
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResults"
+
+  /upload/image:
+    post:
+      operationId: processImageUpload
+      tags: [upload]
+      summary: Process and compress an uploaded image URL
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ImageUploadInput"
+      responses:
+        "200":
+          description: Processed image URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadResult"
+
+  /analytics/seller/{userId}:
+    get:
+      operationId: fetchSellerAnalytics
+      tags: [analytics]
+      summary: Get seller analytics dashboard data
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Analytics data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SellerAnalytics"
+
+  /notifications:
+    get:
+      operationId: listNotifications
+      tags: [notifications]
+      summary: Get notifications for current user
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: unreadOnly
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+
+  /notifications/read:
+    post:
+      operationId: markNotificationsRead
+      tags: [notifications]
+      summary: Mark notifications as read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NotificationReadInput"
+      responses:
+        "200":
+          description: Marked as read
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +615,644 @@ components:
       required:
         - status
 
+    Listing:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        price:
+          type: number
+        originalPrice:
+          type: ["number", "null"]
+        images:
+          type: array
+          items:
+            type: string
+        category:
+          type: string
+        condition:
+          type: string
+        status:
+          type: string
+          enum: [draft, active, sold, archived, pending_review]
+        tags:
+          type: array
+          items:
+            type: string
+        shippingFee:
+          type: ["number", "null"]
+        quantity:
+          type: integer
+        sellerId:
+          type: string
+        sellerName:
+          type: ["string", "null"]
+        sellerAvatar:
+          type: ["string", "null"]
+        sellerVerified:
+          type: boolean
+        likesCount:
+          type: integer
+        viewsCount:
+          type: integer
+        soldCount:
+          type: integer
+        rating:
+          type: ["number", "null"]
+        isLiked:
+          type: boolean
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - title
+        - price
+        - category
+        - status
+        - sellerId
+        - likesCount
+        - viewsCount
+        - soldCount
+        - isLiked
+        - images
+        - quantity
+        - sellerVerified
+        - createdAt
+        - updatedAt
+
+    ListingInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        originalPrice:
+          type: ["number", "null"]
+        images:
+          type: array
+          items:
+            type: string
+        category:
+          type: string
+        condition:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        shippingFee:
+          type: ["number", "null"]
+        quantity:
+          type: integer
+        status:
+          type: string
+      required:
+        - title
+        - price
+        - category
+        - images
+        - quantity
+
+    ListingUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        originalPrice:
+          type: ["number", "null"]
+        images:
+          type: array
+          items:
+            type: string
+        category:
+          type: string
+        condition:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        shippingFee:
+          type: ["number", "null"]
+        quantity:
+          type: integer
+        status:
+          type: string
+
+    LikeStatus:
+      type: object
+      properties:
+        liked:
+          type: boolean
+        likesCount:
+          type: integer
+      required:
+        - liked
+        - likesCount
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        icon:
+          type: string
+        count:
+          type: integer
+      required:
+        - id
+        - name
+        - icon
+        - count
+
+    Profile:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        fullName:
+          type: ["string", "null"]
+        bio:
+          type: ["string", "null"]
+        avatarUrl:
+          type: ["string", "null"]
+        country:
+          type: ["string", "null"]
+        location:
+          type: ["string", "null"]
+        websiteUrl:
+          type: ["string", "null"]
+        facebookUrl:
+          type: ["string", "null"]
+        instagramUrl:
+          type: ["string", "null"]
+        twitterUrl:
+          type: ["string", "null"]
+        isVerified:
+          type: boolean
+        rating:
+          type: ["number", "null"]
+        reviewCount:
+          type: integer
+        followersCount:
+          type: integer
+        followingCount:
+          type: integer
+        listingsCount:
+          type: integer
+        totalSales:
+          type: ["number", "null"]
+        responseTime:
+          type: ["string", "null"]
+        joinedAt:
+          type: string
+        isFollowing:
+          type: boolean
+        badges:
+          type: array
+          items:
+            $ref: "#/components/schemas/Badge"
+      required:
+        - id
+        - username
+        - isVerified
+        - reviewCount
+        - followersCount
+        - followingCount
+        - listingsCount
+        - isFollowing
+        - joinedAt
+        - badges
+
+    ProfileUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+        fullName:
+          type: string
+        bio:
+          type: string
+        avatarUrl:
+          type: string
+        country:
+          type: string
+        location:
+          type: string
+        websiteUrl:
+          type: string
+        facebookUrl:
+          type: string
+        instagramUrl:
+          type: string
+        twitterUrl:
+          type: string
+
+    Badge:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        icon:
+          type: string
+        earnedAt:
+          type: string
+      required:
+        - id
+        - name
+        - icon
+        - earnedAt
+
+    FollowStatus:
+      type: object
+      properties:
+        following:
+          type: boolean
+        followersCount:
+          type: integer
+      required:
+        - following
+        - followersCount
+
+    SellerStats:
+      type: object
+      properties:
+        totalSales:
+          type: number
+        itemsSold:
+          type: integer
+        successRate:
+          type: number
+        responseTime:
+          type: string
+        repeatBuyers:
+          type: number
+        positiveReviews:
+          type: integer
+        rating:
+          type: number
+      required:
+        - totalSales
+        - itemsSold
+        - successRate
+        - responseTime
+        - repeatBuyers
+        - positiveReviews
+        - rating
+
+    Review:
+      type: object
+      properties:
+        id:
+          type: string
+        listingId:
+          type: ["string", "null"]
+        sellerId:
+          type: string
+        reviewerId:
+          type: string
+        reviewerName:
+          type: string
+        reviewerAvatar:
+          type: ["string", "null"]
+        rating:
+          type: integer
+        comment:
+          type: string
+        isVerifiedPurchase:
+          type: boolean
+        helpfulCount:
+          type: integer
+        createdAt:
+          type: string
+      required:
+        - id
+        - sellerId
+        - reviewerId
+        - reviewerName
+        - rating
+        - comment
+        - isVerifiedPurchase
+        - helpfulCount
+        - createdAt
+
+    ReviewInput:
+      type: object
+      properties:
+        listingId:
+          type: ["string", "null"]
+        sellerId:
+          type: string
+        rating:
+          type: integer
+        comment:
+          type: string
+      required:
+        - sellerId
+        - rating
+        - comment
+
+    Cart:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CartItem"
+        subtotal:
+          type: number
+        shippingTotal:
+          type: number
+        total:
+          type: number
+      required:
+        - items
+        - subtotal
+        - shippingTotal
+        - total
+
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: string
+        listingId:
+          type: string
+        title:
+          type: string
+        price:
+          type: number
+        image:
+          type: string
+        quantity:
+          type: integer
+        sellerId:
+          type: string
+        sellerName:
+          type: string
+      required:
+        - id
+        - listingId
+        - title
+        - price
+        - image
+        - quantity
+        - sellerId
+        - sellerName
+
+    CartItemInput:
+      type: object
+      properties:
+        listingId:
+          type: string
+        quantity:
+          type: integer
+      required:
+        - listingId
+        - quantity
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        listingId:
+          type: string
+        listingTitle:
+          type: string
+        listingImage:
+          type: string
+        price:
+          type: number
+        buyerId:
+          type: string
+        sellerId:
+          type: string
+        buyerName:
+          type: ["string", "null"]
+        sellerName:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [pending, confirmed, shipped, delivered, cancelled, refunded]
+        createdAt:
+          type: string
+      required:
+        - id
+        - listingId
+        - listingTitle
+        - listingImage
+        - price
+        - buyerId
+        - sellerId
+        - status
+        - createdAt
+
+    HomeDiscovery:
+      type: object
+      properties:
+        featured:
+          type: array
+          items:
+            $ref: "#/components/schemas/Listing"
+        trending:
+          type: array
+          items:
+            $ref: "#/components/schemas/Listing"
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+        recentlyViewed:
+          type: array
+          items:
+            $ref: "#/components/schemas/Listing"
+      required:
+        - featured
+        - trending
+        - categories
+        - recentlyViewed
+
+    SearchResults:
+      type: object
+      properties:
+        listings:
+          type: array
+          items:
+            $ref: "#/components/schemas/Listing"
+        total:
+          type: integer
+        suggestions:
+          type: array
+          items:
+            type: string
+      required:
+        - listings
+        - total
+        - suggestions
+
+    ImageUploadInput:
+      type: object
+      properties:
+        dataUrl:
+          type: string
+        bucket:
+          type: string
+        filename:
+          type: string
+      required:
+        - dataUrl
+
+    UploadResult:
+      type: object
+      properties:
+        url:
+          type: string
+        path:
+          type: string
+        size:
+          type: integer
+      required:
+        - url
+        - path
+        - size
+
+    SellerAnalytics:
+      type: object
+      properties:
+        totalRevenue:
+          type: number
+        totalOrders:
+          type: integer
+        conversionRate:
+          type: number
+        avgResponseTime:
+          type: number
+        refundRate:
+          type: number
+        repeatBuyerRate:
+          type: number
+        revenueByPeriod:
+          type: array
+          items:
+            $ref: "#/components/schemas/PeriodRevenue"
+        topCategories:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryStats"
+        bestSellingProducts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductStats"
+      required:
+        - totalRevenue
+        - totalOrders
+        - conversionRate
+        - avgResponseTime
+        - refundRate
+        - repeatBuyerRate
+        - revenueByPeriod
+        - topCategories
+        - bestSellingProducts
+
+    PeriodRevenue:
+      type: object
+      properties:
+        period:
+          type: string
+        revenue:
+          type: number
+        orders:
+          type: integer
+      required:
+        - period
+        - revenue
+        - orders
+
+    CategoryStats:
+      type: object
+      properties:
+        category:
+          type: string
+        revenue:
+          type: number
+        count:
+          type: integer
+      required:
+        - category
+        - revenue
+        - count
+
+    ProductStats:
+      type: object
+      properties:
+        listingId:
+          type: string
+        title:
+          type: string
+        sold:
+          type: integer
+        revenue:
+          type: number
+      required:
+        - listingId
+        - title
+        - sold
+        - revenue
+
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [message, follow, like, order, review, price_drop, promo]
+        title:
+          type: string
+        body:
+          type: string
+        isRead:
+          type: boolean
+        data:
+          type: object
+          additionalProperties: true
+        createdAt:
+          type: string
+      required:
+        - id
+        - type
+        - title
+        - body
+        - isRead
+        - createdAt
+
+    NotificationReadInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        all:
+          type: boolean
+      required: []

@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Berlin MarketHUB"
+version = "1.0.0"
+id = "artifacts/berlin-markethub"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18481
+
+[services.development]
+run = "pnpm --filter @workspace/berlin-markethub run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/berlin-markethub", "run", "build" ]
+publicDir = "artifacts/berlin-markethub/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18481"
+BASE_PATH = "/"
