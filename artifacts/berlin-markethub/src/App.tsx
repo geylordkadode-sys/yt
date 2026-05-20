@@ -17,6 +17,8 @@ import ChatDetail from "@/pages/ChatDetail";
 import Cart from "@/pages/Cart";
 import Orders from "@/pages/Orders";
 import Notifications from "@/pages/Notifications";
+import Wallet from "@/pages/Wallet";
+import Settings from "@/pages/Settings";
 import Login from "@/pages/auth/Login";
 import Signup from "@/pages/auth/Signup";
 import VerifyOtp from "@/pages/auth/VerifyOtp";
@@ -41,6 +43,8 @@ function Router() {
       <Route path="/cart" component={Cart} />
       <Route path="/orders" component={Orders} />
       <Route path="/notifications" component={Notifications} />
+      <Route path="/wallet" component={Wallet} />
+      <Route path="/settings" component={Settings} />
       <Route path="/auth/login" component={Login} />
       <Route path="/auth/signup" component={Signup} />
       <Route path="/auth/verify-otp" component={VerifyOtp} />
